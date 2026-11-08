@@ -1,0 +1,26 @@
+# Stale PR and issue bot, DRY RUN. Policy: Meshach's hygiene policy (30 days stale, 60 days close).
+# debug-only: true means it only logs what it WOULD do. It changes nothing.
+# To go live, set debug-only to false in a separate PR after reading a few runs.
+name: stale
+on:
+  schedule:
+    - cron: "17 13 * * 1"
+  workflow_dispatch:
+permissions:
+  issues: write
+  pull-requests: write
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          debug-only: true
+          days-before-stale: 30
+          days-before-close: 60
+          stale-issue-label: stale
+          stale-pr-label: stale
+          exempt-issue-labels: keep
+          exempt-pr-labels: keep
+          stale-pr-message: "No activity for 30 days. Marked stale. Add the keep label or comment to keep it open."
+          close-pr-message: "Closed after 60 days without activity. Reopen any time."
